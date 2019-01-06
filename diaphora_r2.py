@@ -266,20 +266,22 @@ def GetManyBytes(ea, size, use_dbg=False):
 #-----------------------------------------------------------------------
 def GetInputFileMD5():
   md5 = r2.cmd("!rahash2 -qa md5 $R2_FILE").split(" ")[0]
+  assert(len(md5) == 32)
   print ("MD5 %s"%(md5))
-  return "md5here"
+  return md5
 
 #-----------------------------------------------------------------------
 def MinEA():
-    addresses = []
-    r2_cmd_output = r2.cmd('S~:[6]')
-    r2_cmd_output = r2_cmd_output.splitlines()
-    if len(r2_cmd_output) > 1:
-        for i in range(0,len(r2_cmd_output)):
-            addresses.append(int(r2_cmd_output[i],16))
-        return min(addresses)
-    else:
-        return int(r2.cmd('S~:[6]'),16)
+    # minea = "iS~.text[1]"
+    # addresses = []
+    # r2_cmd_output = r2.cmd(minea)
+    # # r2_cmd_output = r2_cmd_output.splitlines()
+    # if len(r2_cmd_output) > 1:
+    #     for i in range(0,len(r2_cmd_output)):
+    #         addresses.append(int(r2_cmd_output[i],16))
+    #     return min(addresses)
+    # else:
+    return int(r2.cmd("iS~.text[1]"),16)
 
 #-----------------------------------------------------------------------
 def MaxEA():
@@ -1854,7 +1856,7 @@ def is_ida_file(filename):
 
 #-----------------------------------------------------------------------
 def remove_file(filename):
-  print "Remove file %s"%(filename)
+  print ("Remove file %s"%(filename))
 
 #-----------------------------------------------------------------------
 
@@ -1876,8 +1878,8 @@ def main():
       if len(sys.argv) > 1:
         filename = sys.argv[1]
       else:
-        print "Usage: diaphora-r2 [bin]"
-        print "Usage: r2 -qAc '!diaphora-r2' /bin/ls"
+        print "Usage: diaphora_r2.py [bin]"
+        print "Usage: r2 -qAc '!diaphora_r2.py' /bin/ls"
         sys.exit(1)
     r2 = r2pipe.open(filename)
     #r2.cmd("aaa")
